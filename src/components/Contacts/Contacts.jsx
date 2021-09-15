@@ -1,51 +1,49 @@
-/* eslint-disable array-callback-return */
-// import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteContact, findContact } from "../../redux/actions";
+import FindContact from "../FindContact/FindContact";
 import s from "../Contacts/Contacts.module.css";
-import { useSelector } from "react-redux";
 
-// import FindContact from "../FindContact/FindContact";
-
-export default function Contacts(props) {
-  const contacts = useSelector((state) => state.contacts.items);
-
-  // const [filter, setFilter] = useState("");
-
-  // const filterContact = (filterContact) => setFilter(filterContact);
-
-  console.log(contacts.contacts);
+export default function Contacts() {
+  const contacts = useSelector((state) => state.contacts);
+  const dispatch = useDispatch();
 
   return (
     <>
-      {/* <FindContact onChange={filterContact} /> */}
+      <FindContact
+        onChange={(dataFilterContact) =>
+          dispatch(findContact(dataFilterContact))
+        }
+      />
+
       <ul>
-        {contacts.map((el) => {
-          // if (filter) {
-          //   if (el.name.toLowerCase().includes(filter)) {
-          //     return (
-          //       <li key={el.id} className={s.li}>
-          //         {el.name} {el.number}
-          //         <button
-          //           className={s.button}
-          //           onClick={() => props.onDelete(el.id)}
-          //         >
-          //           Delete
-          //         </button>
-          //       </li>
-          //     );
-          //   }
-          // } else {
-          return (
-            <li key={el.id} className={s.li}>
-              {el.name} {el.number}
-              <button
-                className={s.button}
-                onClick={() => props.onDelete(el.id)}
-              >
-                Delete
-              </button>
-            </li>
-          );
-          // }
+        {contacts.items.map((el) => {
+          if (contacts.filter) {
+            if (el.name.toLowerCase().includes(contacts.filter)) {
+              return (
+                <li key={el.id} className={s.li}>
+                  {el.name} {el.number}
+                  <button
+                    className={s.button}
+                    onClick={() => dispatch(deleteContact(el.id))}
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            }
+          } else {
+            return (
+              <li key={el.id} className={s.li}>
+                {el.name} {el.number}
+                <button
+                  className={s.button}
+                  onClick={() => dispatch(deleteContact(el.id))}
+                >
+                  Delete
+                </button>
+              </li>
+            );
+          }
         })}
       </ul>
     </>

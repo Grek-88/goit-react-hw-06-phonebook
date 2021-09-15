@@ -1,53 +1,33 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "./App.css";
 
 import Section from "../Section/Section";
 import InputContact from "../InputContact/InputContact";
 import Contacts from "../Contacts/Contacts";
+import { useSelector, useDispatch } from "react-redux";
+import { initStore } from "../../redux/actions";
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const contacts = useSelector((state) => state.contacts);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (JSON.parse(localStorage.getItem("contacts"))) {
-  //     setContacts(JSON.parse(localStorage.getItem("contacts")));
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem("contacts", JSON.stringify(contacts));
-  // }, [contacts]);
-
-  const formSubmitHandler = (dataForm) => {
-    if (
-      contacts.find(
-        (el) => el.name.toLowerCase() === dataForm.name.toLowerCase()
-      )
-    ) {
-      alert(`${dataForm.name} is already in contacts.`);
-    } else {
-      return setContacts((prevContacts) => [...prevContacts, dataForm]);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("contacts"))?.length > 0) {
+      dispatch(initStore(JSON.parse(localStorage.getItem("contacts"))));
     }
-  };
-
-  const deleteContactList = (contactId) => {
-    setContacts((prevContacts) =>
-      prevContacts.filter((el) => el.id !== contactId)
-    );
-  };
+  }, []);
 
   return (
     <div className="App">
       <Section title="Phonebook">
-        <InputContact onSubmit={formSubmitHandler} />
+        <InputContact />
       </Section>
-      {/* {contacts.length > 0 && ( */}
-      <Section title="Contacts">
-        <Contacts contact={contacts} onDelete={deleteContactList} />
-      </Section>
-      {/* )} */}
+      {contacts.items.length > 0 && (
+        <Section title="Contacts">
+          <Contacts />
+        </Section>
+      )}
     </div>
   );
 }
