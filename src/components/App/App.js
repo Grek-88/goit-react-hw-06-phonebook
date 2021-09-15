@@ -1,22 +1,12 @@
-import React, { useEffect } from "react";
-
 import "./App.css";
 
 import Section from "../Section/Section";
 import InputContact from "../InputContact/InputContact";
 import Contacts from "../Contacts/Contacts";
-import { useSelector, useDispatch } from "react-redux";
-import { initStore } from "../../redux/actions";
+import { useSelector } from "react-redux";
 
 export default function App() {
   const contacts = useSelector((state) => state.contacts);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("contacts"))?.length > 0) {
-      dispatch(initStore(JSON.parse(localStorage.getItem("contacts"))));
-    }
-  }, []);
 
   return (
     <div className="App">

@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/actions";
 
 export default function InputContact(props) {
-  const contacts = useSelector((state) => state.contacts.items);
+  const contacts = useSelector((state) => state.contacts);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
-      contacts.find(
+      contacts.items.find(
         (el) => el.name.toLowerCase() === e.target.name.value.toLowerCase()
       )
     ) {

@@ -16,7 +16,7 @@ export default function Contacts() {
       />
 
       <ul>
-        {contacts.items.map((el) => {
+        {contacts?.items?.map((el) => {
           if (contacts.filter) {
             if (el.name.toLowerCase().includes(contacts.filter)) {
               return (
